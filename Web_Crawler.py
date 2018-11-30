@@ -4,13 +4,12 @@ from bs4 import BeautifulSoup
 import re
 import os,json
 import logging
-# Writing data to the output json file
+# function to write data to the output json file
 def writeToJSONFile(entry):
     with open('output.json', 'a',encoding='utf-8') as f:
         json.dump(entry, f)
         f.write(os.linesep)
-#scrwaling  on a page to get all the p tag values
-#and all the links on the page
+#function to scrawl on the page to get all the needed information
 def pageScrawl(url,u_lst):
     logger.info('Connecting URL {}'.format(url))
     try:
@@ -20,7 +19,9 @@ def pageScrawl(url,u_lst):
         logger.info('Connection Failed {}'.format(url))
         return
     bsObj= BeautifulSoup(page, 'html.parser')
+    #collecting all the links found on the current url page
     all_links= bsObj.findAll('a', attrs={'href': re.compile("^http://")})
+    #collecting all p tag values on the current url page
     pvalues=bsObj.findAll('p')
     s=""
     for values in pvalues:
@@ -37,8 +38,10 @@ def pageScrawl(url,u_lst):
         if n_url in u_lst or start_url not in n_url:
             continue
         u_lst.append(n_url)
+        #recursively scrawling on the urls collected
         pageScrawl(n_url,u_lst)
     return
+
 s_url=input("Enter the url :")
 u_lst=[s_url]
 logging.basicConfig(level=logging.DEBUG,filename='log.txt',format="%(asctime)s:%(levelname)s:%(message)s")
