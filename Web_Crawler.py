@@ -50,5 +50,4 @@ start_url=s_url
 start_url=start_url.replace("www.", "")
 start_url=start_url.replace("http://", "")
 start_url=start_url.replace("https://", "")
-start_url=start_url.replace(".com/", ".com")
 pageScrawl(s_url,u_lst)
